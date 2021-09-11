@@ -1,4 +1,5 @@
 import { IfcConfig } from "../config/IfcConfig";
-export function generate(config: IfcConfig): string {
-  return JSON.stringify({error: {message: "generate function is not yet implemented"}, config}, null, 2);
+import { IfcIntent } from "../config/IfcIntent";
+export function generate(config: IfcConfig, intents: IfcIntent[]): string {
+  return JSON.stringify({error: {message: "generate function is not yet implemented"}, config, intents}, null, 2);
 }

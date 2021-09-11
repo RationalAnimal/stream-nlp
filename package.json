@@ -1,0 +1,37 @@
+{
+  "name": "stream-nlp",
+  "version": "0.0.1",
+  "description": "Rewrite of vui-ad-hoc-alexa-recognizer to cleanup code, add NLP parsing of streamed text and other features",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "tsc:w": "tsc --watch",
+    "dummyrun": "node dist/dummyrun/dummyrun.js"
+  },
+  "author": "Ilya Shubentsov",
+  "contributors": [
+    "Ilya Shubentsov"
+  ],
+  "copyright": "Copyright 2017 Ilya Shubentsov",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RationalAnimal/stream-nlp"
+  },
+  "bugs": {
+    "url": "https://github.com/RationalAnimal/stream-nlp.git/issues"
+  },
+  "homepage": "https://github.com/RationalAnimal/stream-nlp.git#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.4.3"
+  },
+  "keywords": [
+    "nlp",
+    "natural language processing",
+    "nlu",
+    "natural language understanding",
+    "sentiment"
+  ]
+}

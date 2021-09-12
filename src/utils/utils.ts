@@ -23,34 +23,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-import { IfcConfig } from "../types/config/IfcConfig";
-import { IfcInteractions } from "../types/config/IfcInteraction";
-import { IfcRecognizer } from "./IfcRecognizer";
-export function generate(config: IfcConfig, interactions: IfcInteractions[]): string {
-  // First make sure that we have a config object:
-  if(! config) {
-    throw {error: {message: "generate: config parameter must be present"}};
+import { IfcConfigCustomSlotType } from "../types/config/IfcConfig";
+export function isBuiltInSlotType(slotType: string): boolean {
+  if(typeof slotType === "string" && slotType.startsWith("TRANSCEND.")) {
+    return true;
   }
-  // TODO Extend the built in slot values with values from config
-
-  let recognizer: IfcRecognizer = {...config};
-
-  // Process all custom slot types' regexes
-  generateCustomSlotTypeMatchRegExes(recognizer);
-  generateCustomSlotTypeSounexMatchRegExes(recognizer);
-
-  // Parse utterances - not needed any more now that JSON file is used instead of string utterances
-  
-
-
-
-  return JSON.stringify({error: {message: "generate function is not yet implemented"}, config, interactions}, null, 2);
+  return false;
 }
 
-function generateCustomSlotTypeMatchRegExes(recognizer: IfcRecognizer) {
-  // TODO - implement this
+export function getBuiltInSlotTypeSuffix(slotType: string): string {
+  if(slotType !== "string") {
+    throw ({error: {message: "getBuiltInSlotTypeSuffix must be a string"}});
+  }
+  return slotType.replace(/^TRANSCEND\./, "");
 }
 
-function generateCustomSlotTypeSounexMatchRegExes(recognizer: IfcRecognizer) {
-  // TODO - implement this
+export function convertCustomSlotValuesToStringArray(customSlot: IfcConfigCustomSlotType): string[] {
+  let returnValue: string[] = [];
+
+  customSlot.values.forEach(value => {
+    if(typeof value === 'string'){
+      returnValue.push(value);
+    } else {
+      returnValue.push(value.value);
+      value.synonyms.forEach(synonym => {
+        returnValue.push(synonym);
+      })
+    }
+  });
+  return returnValue;
 }

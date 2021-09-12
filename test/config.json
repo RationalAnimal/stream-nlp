@@ -1,0 +1,31 @@
+{
+	"customSlotTypes":[
+		{
+			"name": "FRUITINESS",
+			"values": [
+				"apple",
+				"star fruit",
+				"pear",
+				"orange"
+			]
+		}
+	],
+	"builtInIntents":[
+		{
+			"name": "AMAZON.RepeatIntent",
+			"enabled": false
+		}
+	],
+	"builtInSlots": [
+		{
+			"name": "AMAZON.US_STATE",
+			"extendedValues": [
+        {
+          "name": "Future State",
+          "postalCode": "FS",
+          "isState": true
+        }
+      ]
+		}
+	]
+}

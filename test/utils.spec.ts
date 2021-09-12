@@ -23,37 +23,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-import { IfcConfigCustomSlotType } from "../types/config/IfcConfig";
-export function isBuiltInSlotType(slotType: string): boolean {
-  if(typeof slotType === "string" && slotType.startsWith("TRANSCEND.")) {
-    return true;
-  }
-  return false;
-}
+import { expect } from 'chai';
+import { convertCustomSlotValuesToStringArray } from '../src/utils/utils';
+import { IfcConfigCustomSlotType } from '../src/types/config/IfcConfig';
 
-export function getBuiltInSlotTypeSuffix(slotType: string): string {
-  if(slotType !== "string") {
-    throw ({error: {message: "getBuiltInSlotTypeSuffix must be a string"}});
-  }
-  return slotType.replace(/^TRANSCEND\./, "");
-}
-
-export function convertCustomSlotValuesToStringArray(customSlot: IfcConfigCustomSlotType): string[] {
-  let returnValue: string[] = [];
-
-  customSlot.values.forEach(value => {
-    if(typeof value === 'string'){
-      returnValue.push(value);
-    } else {
-      if(value.value) {
-        returnValue.push(value.value);
-      }
-      if(value.synonyms && Array.isArray(value.synonyms)) {
-        value.synonyms.forEach(synonym => {
-          returnValue.push(synonym);
-        })
-      }
-    }
-  });
-  return returnValue;
-}
+describe("utils", () => {
+  describe("convertCustomSlotValuesToStringArray", () => {
+    it("convert custom slot type's values that only contain strings", () => {
+      let customSlotType: IfcConfigCustomSlotType = {name: "SomeSlotType", values: ["one", "two", "three"]};
+      let result = convertCustomSlotValuesToStringArray(customSlotType);
+      let expectedResult = [ 'one', 'two', 'three' ];
+      expect(result).deep.equal(expectedResult);
+    });
+    it("convert custom slot type's values", () => {
+      let customSlotType: IfcConfigCustomSlotType = {name: "SomeSlotType", values: ["one", {value: "two", synonyms: ["2"]}, {value: "bug", synonyms: ["insect", "beetle"]}]};
+      let result = convertCustomSlotValuesToStringArray(customSlotType);
+      let expectedResult = [ 'one', 'two', '2', 'bug', 'insect', 'beetle' ];
+      expect(result).deep.equal(expectedResult);
+    });
+  })
+});

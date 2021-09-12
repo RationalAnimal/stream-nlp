@@ -24,7 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 import { expect } from 'chai';
-import { getUtteranceRegEx, getStringArrayRegEx } from '../src/regex/utils';
+import { getUtteranceRegEx, getStringArrayRegEx, getCustomSlotRegEx } from '../src/regex/utils';
 import { convertCustomSlotValuesToStringArray } from '../src/utils/utils';
 import { IfcConfigCustomSlotType } from '../src/types/config/IfcConfig';
 import { implementedInteractions } from './interactions_1';
@@ -42,6 +42,20 @@ describe("regex utils", () => {
       let customSlotType: IfcConfigCustomSlotType = {name: "SomeSlotType", values: ["one", "two", "three"]};
       let result = convertCustomSlotValuesToStringArray(customSlotType);
       let expectedResult = [ 'one', 'two', 'three' ];
+      expect(result).deep.equal(expectedResult);
+    });
+    it("convert custom slot type's values", () => {
+      let customSlotType: IfcConfigCustomSlotType = {name: "SomeSlotType", values: ["one", {value: "two", synonyms: ["2"]}, {value: "bug", synonyms: ["insect", "beetle"]}]};
+      let result = convertCustomSlotValuesToStringArray(customSlotType);
+      let expectedResult = [ 'one', 'two', '2', 'bug', 'insect', 'beetle' ];
+      expect(result).deep.equal(expectedResult);
+    });
+  })
+  describe("getCustomSlotRegEx", () => {
+    it("generate a regex for a custom slot with values that only contain strings", () => {
+      let customSlotType: IfcConfigCustomSlotType = {name: "SomeSlotType", values: ["one", "two", "three"]};
+      let result = getCustomSlotRegEx(customSlotType);
+      let expectedResult = '((?:one\\s*|two\\s*|three\\s*)+)';
       expect(result).deep.equal(expectedResult);
     });
   })
